@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Filippo Zonta — Fraud &amp; Risk Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A0E14;
+    --navy:#121A2B;
+    --navy-2:#182238;
+    --paper:#E9E6DC;
+    --amber:#E8A33D;
+    --amber-dim:#8a6a2e;
+    --teal:#3D9C8C;
+    --teal-dim:#2b6a60;
+    --text:#C9CDD6;
+    --text-dim:#7C8496;
+    --hairline:#26304a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--amber); color:var(--ink);}
+
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .serif{font-family:'Fraunces', serif;}
+
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 32px;}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,14,20,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--hairline);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .nav-id{
+    font-size:13px; letter-spacing:0.06em;
+    color:var(--text-dim);
+  }
+  .nav-id b{color:var(--paper); font-weight:500;}
+  .nav-links{display:flex; gap:28px; font-size:13px; letter-spacing:0.03em;}
+  .nav-links a{
+    color:var(--text-dim); text-decoration:none;
+    transition:color .2s ease;
+    position:relative;
+  }
+  .nav-links a:hover{color:var(--paper);}
+  .nav-links a:focus-visible{outline:2px solid var(--teal); outline-offset:4px;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:120px 0 100px;
+    overflow:hidden;
+    border-bottom:1px solid var(--hairline);
+  }
+  #graph-canvas{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    opacity:0.55;
+  }
+  .hero-inner{position:relative; z-index:2;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--amber);
+    margin-bottom:28px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px; height:7px; border-radius:50%;
+    background:var(--amber);
+    box-shadow:0 0 0 4px rgba(232,163,61,0.15);
+  }
+  h1.hero-title{
+    font-size:clamp(42px, 7vw, 76px);
+    font-weight:500;
+    line-height:1.02;
+    color:var(--paper);
+    max-width:14ch;
+    margin-bottom:26px;
+  }
+  .hero-sub{
+    font-size:18px;
+    color:var(--text);
+    max-width:52ch;
+    margin-bottom:40px;
+  }
+  .hero-sub b{color:var(--paper); font-weight:500;}
+  .hero-meta{
+    display:flex; flex-wrap:wrap; gap:28px 40px;
+    font-size:13px;
+  }
+  .hero-meta div{display:flex; flex-direction:column; gap:4px;}
+  .hero-meta .label{color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; font-size:11px;}
+  .hero-meta .value{color:var(--paper);}
+
+  /* ---------- section scaffolding ---------- */
+  section{padding:88px 0;}
+  section + section{border-top:1px solid var(--hairline);}
+  .section-head{
+    display:flex; align-items:baseline; gap:16px;
+    margin-bottom:56px;
+  }
+  .section-head .tag{
+    font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--teal);
+    white-space:nowrap;
+  }
+  .section-head .rule{flex:1; height:1px; background:var(--hairline);}
+  h2.section-title{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(26px, 3.4vw, 34px);
+    color:var(--paper);
+  }
+
+  /* ---------- about ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:56px;
+    align-items:start;
+  }
+  .portrait-frame{
+    position:relative;
+    border:1px solid var(--hairline);
+    padding:10px;
+    background:var(--navy);
+  }
+  .portrait-frame img{
+    filter:grayscale(0.35) contrast(1.05);
+    border:1px solid var(--hairline);
+  }
+  .portrait-tag{
+    display:flex; justify-content:space-between;
+    font-size:10px; letter-spacing:0.06em;
+    color:var(--text-dim);
+    margin-top:10px;
+    padding:0 2px;
+  }
+  .portrait-tag .dot{color:var(--teal);}
+  .about-body p{margin-bottom:18px; font-size:16px; color:var(--text); max-width:62ch;}
+  .about-body p:last-child{margin-bottom:0;}
+  .about-body b{color:var(--paper); font-weight:500;}
+
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:28px;}
+  .chip{
+    font-size:12px; font-family:'IBM Plex Mono', monospace;
+    padding:6px 12px;
+    border:1px solid var(--hairline);
+    color:var(--text-dim);
+  }
+
+  /* ---------- timeline ---------- */
+  .tl{border-left:1px solid var(--hairline); margin-left:6px;}
+  .tl-item{position:relative; padding:0 0 44px 32px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:"";
+    position:absolute; left:-5.5px; top:4px;
+    width:10px; height:10px;
+    background:var(--ink);
+    border:2px solid var(--teal);
+  }
+  .tl-date{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; color:var(--amber);
+    letter-spacing:0.04em;
+    margin-bottom:6px;
+  }
+  .tl-role{color:var(--paper); font-size:18px; font-weight:500; margin-bottom:4px;}
+  .tl-org{color:var(--text-dim); font-size:14px; margin-bottom:12px;}
+  .tl-desc{font-size:15px; color:var(--text); max-width:60ch;}
+
+  /* ---------- exhibits / projects ---------- */
+  .exhibit{
+    border:1px solid var(--hairline);
+    background:var(--navy);
+    margin-bottom:24px;
+  }
+  .exhibit:last-child{margin-bottom:0;}
+  .exhibit-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 28px;
+    border-bottom:1px solid var(--hairline);
+    flex-wrap:wrap; gap:12px;
+  }
+  .exhibit-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; color:var(--text-dim); letter-spacing:0.08em;
+  }
+  .exhibit-status{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    padding:4px 10px;
+    border:1px solid var(--teal-dim);
+    color:var(--teal);
+  }
+  .exhibit-status.amber{border-color:var(--amber-dim); color:var(--amber);}
+  .exhibit-body{padding:28px;}
+  .exhibit-title{
+    font-family:'Fraunces', serif;
+    font-size:24px; font-weight:500;
+    color:var(--paper);
+    margin-bottom:12px;
+  }
+  .exhibit-desc{font-size:15px; color:var(--text); max-width:66ch; margin-bottom:22px;}
+  .metric-row{display:flex; flex-wrap:wrap; gap:0; border-top:1px solid var(--hairline);}
+  .metric{
+    flex:1; min-width:140px;
+    padding:16px 20px 0;
+    border-right:1px solid var(--hairline);
+  }
+  .metric:last-child{border-right:none;}
+  .metric-val{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:22px; color:var(--paper);
+  }
+  .metric-label{
+    font-size:11px; color:var(--text-dim);
+    letter-spacing:0.05em; text-transform:uppercase;
+    margin-top:4px;
+  }
+  .exhibit-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px;}
+
+  /* ---------- skills ---------- */
+  .skill-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+    gap:1px;
+    background:var(--hairline);
+    border:1px solid var(--hairline);
+  }
+  .skill-cell{background:var(--ink); padding:22px 24px;}
+  .skill-cat{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--teal); margin-bottom:12px;
+  }
+  .skill-list{font-size:14px; color:var(--text); line-height:1.9;}
+
+  /* ---------- contact ---------- */
+  .contact-inner{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    flex-wrap:wrap; gap:32px;
+  }
+  h2.contact-title{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(30px,4.5vw,48px);
+    color:var(--paper);
+    max-width:14ch;
+  }
+  .contact-links{display:flex; flex-direction:column; gap:14px;}
+  .contact-links a{
+    font-size:16px;
+    text-decoration:none;
+    color:var(--text);
+    border-bottom:1px solid var(--hairline);
+    padding-bottom:2px;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .contact-links a:hover{color:var(--amber); border-color:var(--amber-dim);}
+  .contact-links a:focus-visible{outline:2px solid var(--teal); outline-offset:4px;}
+
+  footer{
+    border-top:1px solid var(--hairline);
+    padding:28px 0;
+    font-size:12px; color:var(--text-dim);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+
+  @media (max-width:760px){
+    .about-grid{grid-template-columns:1fr;}
+    .portrait-frame{max-width:220px;}
+    .metric-row{flex-direction:column;}
+    .metric{border-right:none; border-bottom:1px solid var(--hairline); padding-bottom:16px;}
+    .metric:last-child{border-bottom:none;}
+    .nav-links{display:none;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    #graph-canvas{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-id mono">FZ<b>·</b>DOSSIER</div>
+    <div class="nav-links mono">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Progetti</a>
+      <a href="#contact">Contatti</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="graph-canvas"></canvas>
+  <div class="wrap hero-inner">
+    <div class="eyebrow mono">Case File — Risk &amp; Fraud Analytics</div>
+    <h1 class="hero-title serif">Filippo Zonta</h1>
+    <p class="hero-sub">Data scientist specializzato in <b>AML, fraud detection e model risk</b>. Trasformo reti di transazioni in evidenze — dal transaction monitoring in produzione ai grafi di transazione con GNN.</p>
+    <div class="hero-meta mono">
+      <div><span class="label">Base</span><span class="value">Chicago, IL</span></div>
+      <div><span class="label">Formazione</span><span class="value">M.S. Data Science — DePaul University</span></div>
+      <div><span class="label">Focus</span><span class="value">Fraud/Banking DS · Model Risk · Risk Mgmt</span></div>
+      <div><span class="label">Status</span><span class="value">Autorizzato a lavorare in US, no sponsorship</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag mono">01 — Profilo</span>
+      <span class="rule"></span>
+    </div>
+    <div class="about-grid">
+      <div>
+        <div class="portrait-frame">
+          <img src="filippo.jpg" alt="Ritratto di Filippo Zonta">
+        </div>
+        <div class="portrait-tag mono">
+          <span>SUBJECT</span>
+          <span class="dot">● VERIFIED</span>
+        </div>
+      </div>
+      <div class="about-body">
+        <p>Sto completando un <b>M.S. in Data Science alla DePaul University</b> (Chicago), con una media del 4.0, dopo un primo M.S. in <b>Finanza Quantitativa alla Sapienza Università di Roma</b> e una laurea triennale alla <b>Ca' Foscari di Venezia</b>.</p>
+        <p>In precedenza ho lavorato in <b>Accenture a Milano</b> come Data &amp; Business Analyst, su un progetto di transaction monitoring AML per UniCredit — circa un miliardo di record distribuiti su sei entità legali, con pipeline in Python, PySpark, SQL, Palantir Foundry e Power BI.</p>
+        <p>Oggi lavoro su modelli di fraud detection e AML su dataset pubblici (SAML-D, Elliptic), con l'obiettivo di entrare in ruoli di <b>data science su frodi/banking, model risk analysis o risk management</b> nel mercato statunitense.</p>
+        <div class="chip-row">
+          <span class="chip">AML / Transaction Monitoring</span>
+          <span class="chip">Fraud Detection</span>
+          <span class="chip">Model Risk</span>
+          <span class="chip">Graph ML</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag mono">02 — Percorso</span>
+      <span class="rule"></span>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-date mono">2024 — presente</div>
+        <div class="tl-role serif">M.S. Data Science</div>
+        <div class="tl-org">DePaul University, Chicago — GPA 4.0</div>
+        <div class="tl-desc">Coursework su database analitici, data visualization, analisi multivariata (PCA, regressione, regolarizzazione) — con progetti applicati a dati AML, transazionali e comportamentali.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date mono">Accenture · Milano</div>
+        <div class="tl-role serif">Data &amp; Business Analyst</div>
+        <div class="tl-org">Transaction monitoring AML — cliente UniCredit</div>
+        <div class="tl-desc">Pipeline di migrazione da sistema legacy a motore di calcolo Oracle su ~1B record across sei entità legali; data quality lato business; testing SIT/UAT. Stack: Python, PySpark, SQL, Palantir Foundry, Power BI.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date mono">Sapienza Università di Roma</div>
+        <div class="tl-role serif">M.S. Finanza Quantitativa</div>
+        <div class="tl-org">Tesi su Credit Valuation Adjustment (CVA)</div>
+        <div class="tl-desc">Progetti su GARCH-MIDAS, Cox-Ross-Rubinstein, Robust Beta, previsione real estate.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date mono">2019</div>
+        <div class="tl-role serif">Research Internship</div>
+        <div class="tl-org">SIEA, Bratislava</div>
+        <div class="tl-desc">Percorso di ricerca prima dell'ingresso in Accenture.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date mono">Ca' Foscari Università di Venezia</div>
+        <div class="tl-role serif">B.S.</div>
+        <div class="tl-org">Formazione di base</div>
+        <div class="tl-desc">Punto di partenza del percorso in economia e finanza quantitativa.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag mono">03 — Progetti</span>
+      <span class="rule"></span>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-head">
+        <span class="exhibit-num mono">EXHIBIT 01 — SAML-D</span>
+        <span class="exhibit-status amber mono">In corso</span>
+      </div>
+      <div class="exhibit-body">
+        <div class="exhibit-title serif">Fraud detection su transazioni sintetiche AML</div>
+        <p class="exhibit-desc">Dataset SAML-D (~9.5M transazioni, tasso di frode ~0.1%). Confronto sistematico tra Decision Tree, Random Forest, SMOTE+RF e XGBoost; feature engineering su tassi di frode per paese mittente/destinatario in R. La conclusione principale: il collo di bottiglia è la qualità delle feature, non la scelta del modello — tutti i modelli convergono su prestazioni simili.</p>
+        <div class="metric-row mono">
+          <div class="metric">
+            <div class="metric-val">~0.79–0.80</div>
+            <div class="metric-label">AUC (tutti i modelli)</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">~0.63–0.64</div>
+            <div class="metric-label">Recall</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">9.5M</div>
+            <div class="metric-label">Transazioni</div>
+          </div>
+        </div>
+        <div class="exhibit-tags">
+          <span class="chip">Python</span>
+          <span class="chip">R</span>
+          <span class="chip">XGBoost</span>
+          <span class="chip">SMOTE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-head">
+        <span class="exhibit-num mono">EXHIBIT 02 — Elliptic</span>
+        <span class="exhibit-status amber mono">In corso</span>
+      </div>
+      <div class="exhibit-body">
+        <div class="exhibit-title serif">Graph Neural Networks su transazioni Bitcoin</div>
+        <p class="exhibit-desc">Node classification sul dataset Elliptic (~203K nodi, ~234K archi, split temporale ufficiale). Confronto tra baseline tabulare (Random Forest sulle sole feature nodo) e GCN a due layer che sfrutta la topologia del grafo — un risultato controintuitivo emerso dal confronto: il baseline tabulare batte la GNN, probabilmente perché le feature aggregate sui vicini incorporano già segnale strutturale. Prossimo passo: GraphSAGE con split train/validation/test corretto.</p>
+        <div class="metric-row mono">
+          <div class="metric">
+            <div class="metric-val">0.93</div>
+            <div class="metric-label">AUC — RF baseline</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">0.84</div>
+            <div class="metric-label">AUC — GCN</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">203K</div>
+            <div class="metric-label">Nodi</div>
+          </div>
+        </div>
+        <div class="exhibit-tags">
+          <span class="chip">PyTorch Geometric</span>
+          <span class="chip">GCN</span>
+          <span class="chip">Random Forest</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-head">
+        <span class="exhibit-num mono">EXHIBIT 03 — Group 5</span>
+        <span class="exhibit-status mono">Completato</span>
+      </div>
+      <div class="exhibit-body">
+        <div class="exhibit-title serif">Data Visualization su reti AML</div>
+        <p class="exhibit-desc">Progetto di gruppo (DSC465, DePaul) su dati AML: codice di stratified sampling, mappe coropletiche in R e un grafo della rete di transazioni. Deck di sintesi con slide su distribuzione delle classi, importi delle transazioni e geografia/rete.</p>
+        <div class="exhibit-tags">
+          <span class="chip">R</span>
+          <span class="chip">ggplot2</span>
+          <span class="chip">Network Analysis</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag mono">04 — Strumenti</span>
+      <span class="rule"></span>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-cell">
+        <div class="skill-cat mono">Linguaggi</div>
+        <div class="skill-list">Python · SQL · R (ggplot2)</div>
+      </div>
+      <div class="skill-cell">
+        <div class="skill-cat mono">Data &amp; ML</div>
+        <div class="skill-list">PySpark · PyTorch Geometric · scikit-learn</div>
+      </div>
+      <div class="skill-cell">
+        <div class="skill-cat mono">Piattaforme</div>
+        <div class="skill-list">Palantir Foundry · Power BI · SQLite</div>
+      </div>
+      <div class="skill-cell">
+        <div class="skill-cat mono">Altro</div>
+        <div class="skill-list">Overleaf (LaTeX)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap contact-inner">
+    <h2 class="contact-title serif">Aperto a ruoli in fraud, model risk e risk management.</h2>
+    <div class="contact-links mono">
+      <a href="mailto:tuaemail@esempio.com">tuaemail@esempio.com</a>
+      <a href="https://linkedin.com/in/tuo-profilo" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="https://github.com/tuo-profilo" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap contact-inner" style="align-items:center;">
+    <span class="mono">© 2026 Filippo Zonta</span>
+    <span class="mono">Chicago, IL</span>
+  </div>
+</footer>
+
+<script>
+  // Signature element: animated transaction-network graph in the hero,
+  // echoing the SAML-D / Elliptic transaction-graph work.
+  (function(){
+    const canvas = document.getElementById('graph-canvas');
+    const ctx = canvas.getContext('2d');
+    const hero = document.querySelector('.hero');
+    let w, h, nodes = [], edges = [];
+    const NODE_COUNT = 26;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function resize(){
+      w = canvas.width = hero.offsetWidth;
+      h = canvas.height = hero.offsetHeight;
+    }
+
+    function init(){
+      resize();
+      nodes = [];
+      for(let i=0;i<NODE_COUNT;i++){
+        nodes.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          vx: (Math.random()-0.5)*0.15,
+          vy: (Math.random()-0.5)*0.15,
+          flagged: i === Math.floor(NODE_COUNT*0.62)
+        });
+      }
+      edges = [];
+      nodes.forEach((n,i)=>{
+        const links = 1 + Math.floor(Math.random()*2);
+        for(let k=0;k<links;k++){
+          const j = Math.floor(Math.random()*nodes.length);
+          if(j!==i) edges.push([i,j]);
+        }
+      });
+    }
+
+    function draw(t){
+      ctx.clearRect(0,0,w,h);
+
+      // edges
+      edges.forEach(([i,j])=>{
+        const a = nodes[i], b = nodes[j];
+        const flaggedEdge = a.flagged || b.flagged;
+        ctx.strokeStyle = flaggedEdge ? 'rgba(232,163,61,0.28)' : 'rgba(61,156,140,0.16)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      });
+
+      // nodes
+      nodes.forEach(n=>{
+        if(!reduceMotion){
+          n.x += n.vx; n.y += n.vy;
+          if(n.x<0||n.x>w) n.vx*=-1;
+          if(n.y<0||n.y>h) n.vy*=-1;
+        }
+        const pulse = n.flagged ? (Math.sin(t/450)+1)/2 : 0;
+        const r = n.flagged ? 3.2 + pulse*2.2 : 2.2;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r, 0, Math.PI*2);
+        ctx.fillStyle = n.flagged ? `rgba(232,163,61,${0.55+pulse*0.4})` : 'rgba(201,205,214,0.35)';
+        ctx.fill();
+        if(n.flagged){
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r+5+pulse*3, 0, Math.PI*2);
+          ctx.strokeStyle = `rgba(232,163,61,${0.25*(1-pulse)})`;
+          ctx.stroke();
+        }
+      });
+    }
+
+    function loop(t){
+      draw(t);
+      if(!reduceMotion) requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', ()=>{ resize(); });
+    init();
+    if(reduceMotion){ draw(0); } else { requestAnimationFrame(loop); }
+  })();
+</script>
+
+</body>
+</html>
