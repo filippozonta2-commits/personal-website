@@ -414,31 +414,33 @@
 
     <div class="exhibit">
       <div class="exhibit-head">
-        <span class="exhibit-num mono">EXHIBIT 01 — SAML-D</span>
-        <span class="exhibit-status amber mono">In corso</span>
+        <span class="exhibit-num mono">EXHIBIT 01 — AML TRANSACTION MONITORING</span>
+        <span class="exhibit-status amber mono">Risultati riportati · audit in corso</span>
       </div>
       <div class="exhibit-body">
-        <div class="exhibit-title serif">Fraud detection su transazioni sintetiche AML</div>
-        <p class="exhibit-desc">Dataset SAML-D (~9.5M transazioni, tasso di frode ~0.1%). Confronto sistematico tra Decision Tree, Random Forest, SMOTE+RF e XGBoost; feature engineering su tassi di frode per paese mittente/destinatario in R. La conclusione principale: il collo di bottiglia è la qualità delle feature, non la scelta del modello — tutti i modelli convergono su prestazioni simili.</p>
+        <div class="exhibit-title serif">AML Transaction Monitoring &amp; Investigation Console</div>
+        <p class="exhibit-desc">Prototipo end-to-end su transazioni sintetiche SAML-D: confronto su HOLDOUT cronologico tra Rule-Based V3 (11 scenari) e XGBoost Detection V1, con aggregazione degli alert, case management, tracciabilità delle evidenze e dashboard Streamlit. I risultati congelati riportano recall del 57,35% per le regole e dell'84,18% per XGBoost, con rispettive precision del 0,96% e del 4,56%. I conteggi pubblicati sono coerenti aritmeticamente, ma la riproduzione indipendente del modello, la verifica delle feature geografiche supervisionate e la PR-AUC restano aperte; non sono risultati di produzione.</p>
         <div class="metric-row mono">
           <div class="metric">
-            <div class="metric-val">~0.79–0.80</div>
-            <div class="metric-label">AUC (tutti i modelli)</div>
+            <div class="metric-val">84,18%</div>
+            <div class="metric-label">Recall XGBoost · riportata</div>
           </div>
           <div class="metric">
-            <div class="metric-val">~0.63–0.64</div>
-            <div class="metric-label">Recall</div>
+            <div class="metric-val">4,56%</div>
+            <div class="metric-label">Precision XGBoost · riportata</div>
           </div>
           <div class="metric">
-            <div class="metric-val">9.5M</div>
-            <div class="metric-label">Transazioni</div>
+            <div class="metric-val">1,90M</div>
+            <div class="metric-label">Transazioni HOLDOUT</div>
           </div>
         </div>
+        <p class="exhibit-desc" style="margin-top:18px; margin-bottom:0; font-size:13px;">Evidenza: <a href="https://github.com/filippozonta2-commits/aml_transaction_monitoring_system" target="_blank" rel="noopener noreferrer">repository AML</a>. Audit tecnico e controlli di leakage in revisione; le metriche non sono state nuovamente riprodotte da questo aggiornamento.</p>
         <div class="exhibit-tags">
           <span class="chip">Python</span>
-          <span class="chip">R</span>
           <span class="chip">XGBoost</span>
-          <span class="chip">SMOTE</span>
+          <span class="chip">Streamlit</span>
+          <span class="chip">Model Governance</span>
+          <span class="chip">Case Management</span>
         </div>
       </div>
     </div>
