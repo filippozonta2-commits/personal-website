@@ -419,7 +419,7 @@
       </div>
       <div class="exhibit-body">
         <div class="exhibit-title serif">AML Transaction Monitoring &amp; Investigation Console</div>
-        <p class="exhibit-desc">Prototipo end-to-end su transazioni sintetiche SAML-D: confronto su HOLDOUT cronologico tra Rule-Based V3 (11 scenari) e XGBoost Detection V1, con aggregazione degli alert, case management, tracciabilità delle evidenze e dashboard Streamlit. I risultati congelati riportano recall del 57,35% per le regole e dell'84,18% per XGBoost, con rispettive precision del 0,96% e del 4,56%. I conteggi pubblicati sono coerenti aritmeticamente, ma la riproduzione indipendente del modello, la verifica delle feature geografiche supervisionate e la PR-AUC restano aperte; non sono risultati di produzione.</p>
+        <p class="exhibit-desc">Prototipo end-to-end su transazioni sintetiche SAML-D: confronto su HOLDOUT cronologico tra Rule-Based V3 (11 scenari) e XGBoost Detection V1, con aggregazione degli alert, case management, tracciabilità delle evidenze e dashboard Streamlit. I risultati congelati riportano recall del 57,35% per le regole e dell'84,18% per XGBoost, con rispettive precision del 0,96% e del 4,56%. I conteggi pubblicati sono coerenti aritmeticamente. Il codice originale degli 11 controlli congelati è stato rintracciato in un branch storico, ma non ancora rieseguito sul HOLDOUT; alcune regole operano su finestre complete o su 72 ore successive, quindi non equivalgono a scoring causale in tempo reale. La riproduzione indipendente di XGBoost, la verifica delle feature geografiche supervisionate e la PR-AUC restano aperte. Nessuna di queste metriche è un risultato di produzione.</p>
         <div class="metric-row mono">
           <div class="metric">
             <div class="metric-val">84,18%</div>
@@ -434,7 +434,7 @@
             <div class="metric-label">Transazioni HOLDOUT</div>
           </div>
         </div>
-        <p class="exhibit-desc" style="margin-top:18px; margin-bottom:0; font-size:13px;">Evidenza: <a href="https://github.com/filippozonta2-commits/aml_transaction_monitoring_system" target="_blank" rel="noopener noreferrer">repository AML</a>. Audit tecnico e controlli di leakage in revisione; le metriche non sono state nuovamente riprodotte da questo aggiornamento.</p>
+        <p class="exhibit-desc" style="margin-top:18px; margin-bottom:0; font-size:13px;">Evidenza: <a href="https://github.com/filippozonta2-commits/aml_transaction_monitoring_system" target="_blank" rel="noopener noreferrer">repository AML</a>. Audit tecnico aggiornato al 30/10/2026: <a href="https://github.com/filippozonta2-commits/aml_transaction_monitoring_system/blob/docs/model-validation-clarity-20261029/docs/frozen_v3_followup_audit_2026-10-30.md" target="_blank" rel="noopener noreferrer">verifica V3, leakage e limiti</a>. Metriche congelate riportate, non riprodotte indipendentemente; validazione SIT/UAT formale ancora aperta.</p>
         <div class="exhibit-tags">
           <span class="chip">Python</span>
           <span class="chip">XGBoost</span>
